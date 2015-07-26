@@ -2,12 +2,15 @@ package com.ff.retrievers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.ff.datatypes.NFLTeam;
 import com.ff.datatypes.Player;
+import com.ff.datatypes.Position;
+import com.ff.utils.DatabaseUtils;
 
 public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 
@@ -53,8 +56,6 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		
 		JSONObject jsonObject = new JSONObject(output);
-		System.out.println(jsonObject.length());
-		System.out.println(jsonObject.toString());
 		
 		//go through all 16 weeks of the season, looking for Bye Weeks (typically 4-11)
 		for(int i = 1; i < 16; i++){
@@ -80,8 +81,83 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 		return map;
 	}
 
-	public ArrayList<Player> getProPlayers() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Player> getProPlayers(ArrayList<String> rookiesList) {
+		ArrayList<Player> output = new ArrayList<Player>();
+		
+		output.addAll(getPlayersByPosition("QB",rookiesList));
+		output.addAll(getPlayersByPosition("RB",rookiesList));
+		output.addAll(getPlayersByPosition("WR",rookiesList));
+		output.addAll(getPlayersByPosition("TE",rookiesList));
+		output.addAll(getPlayersByPosition("K",rookiesList));
+		return output;
+	}
+	
+	public ArrayList<Player> getPlayersByPosition(String pos, ArrayList<String> rookiesList) {
+		ArrayList<Player> players = new ArrayList<Player>();
+		
+		String output = _restUtils.getrequest(_apiURL + "/service/players/json/jkbt9qb2pfh3/" + pos + "/");
+		JSONObject jsonObject = new JSONObject(output);
+		JSONArray jsonObjectPlayer = jsonObject.getJSONArray("Players");
+		
+		for(int i = 0; i < jsonObjectPlayer.length(); i++){
+			Player currentPlayer = new Player();
+			
+			String displayname = jsonObjectPlayer.getJSONObject(i).getString("displayName");
+			String lastname = jsonObjectPlayer.getJSONObject(i).getString("lname");
+			String firstname = jsonObjectPlayer.getJSONObject(i).getString("fname");
+			String team = jsonObjectPlayer.getJSONObject(i).getString("team");
+			String position = jsonObjectPlayer.getJSONObject(i).getString("position");
+			String dob = jsonObjectPlayer.getJSONObject(i).getString("dob");
+			String college = jsonObjectPlayer.getJSONObject(i).getString("college");
+			String nerdID = jsonObjectPlayer.getJSONObject(i).getString("playerId");
+			
+			boolean rookieFlag = false;
+			int experience = 0;
+			
+			if(rookiesList.contains(firstname+lastname+team+position)){
+				rookieFlag = true;
+				experience = 0;
+				System.out.println("Found a rookie: " + firstname + " " + lastname);
+			}
+			else{
+				//get experience for pros
+				experience = 99;
+			}
+
+			currentPlayer.displayName = displayname;
+			currentPlayer.lastName = lastname;
+			currentPlayer.firstName = firstname;
+			currentPlayer.team = team;
+			currentPlayer.position = Position.valueOf(pos);
+			currentPlayer.college = college;
+			currentPlayer.dob = dob;
+			currentPlayer.rookieFlag = rookieFlag;
+			currentPlayer.experience = experience;
+			
+			players.add(currentPlayer);
+		}
+		return players;
+	}
+	
+	public void idMapInitializer(DatabaseUtils db, String inPos) {
+		ArrayList<Player> players = new ArrayList<Player>();
+		
+		String output = _restUtils.getrequest(_apiURL + "/service/players/json/jkbt9qb2pfh3/" + inPos + "/");
+		JSONObject jsonObject = new JSONObject(output);
+		JSONArray jsonObjectPlayer = jsonObject.getJSONArray("Players");
+		
+		for(int i = 0; i < jsonObjectPlayer.length(); i++){
+			
+			String lastname = jsonObjectPlayer.getJSONObject(i).getString("lname");
+			String firstname = jsonObjectPlayer.getJSONObject(i).getString("fname");
+			String team = jsonObjectPlayer.getJSONObject(i).getString("team");
+			String position = jsonObjectPlayer.getJSONObject(i).getString("position");
+			String nerdID = jsonObjectPlayer.getJSONObject(i).getString("playerId");
+
+			List<Integer> matchingIDs = db.findPlayerIDs(lastname, firstname, position, team);
+			if(matchingIDs.size() == 1){
+				db.insertNewID(matchingIDs.get(0), "nerd_id", Integer.parseInt(nerdID));
+			}
+		}
 	}
 }

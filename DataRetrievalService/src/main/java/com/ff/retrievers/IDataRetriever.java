@@ -10,5 +10,5 @@ public interface IDataRetriever {
 	
 	ArrayList<NFLTeam> getProTeams();
 	HashMap<String, Integer> getByeWeeks();
-	ArrayList<Player> getProPlayers();
+	ArrayList<Player> getProPlayers(ArrayList<String> rookiesList);
 }

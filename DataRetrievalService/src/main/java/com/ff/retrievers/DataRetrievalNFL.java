@@ -28,7 +28,7 @@ public class DataRetrievalNFL extends DataRetrieval implements IDataRetriever{
 		return null;
 	}
 
-	public ArrayList<Player> getProPlayers() {
+	public ArrayList<Player> getProPlayers(ArrayList<String> rookiesList) {
 		// TODO Auto-generated method stub
 		return null;
 	}

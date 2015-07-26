@@ -2,13 +2,14 @@ package com.ff.datatypes;
 
 public class Player {
 
-	public long id;
+	public int id;
+	public String displayName;
 	public String lastName;
 	public String firstName;
-	public Position pos;
-	public NFLTeam team;
+	public Position position;
+	public String team;
 	public String college;
-	public int age;
+	public String dob;
 	public int experience;
 	public boolean rookieFlag;
 	

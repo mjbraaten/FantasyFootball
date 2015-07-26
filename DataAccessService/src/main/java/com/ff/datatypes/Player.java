@@ -2,7 +2,7 @@ package com.ff.datatypes;
 
 public class Player {
 
-	public long id;
+	public int id;
 	public String lastName;
 	public String firstName;
 	public Position pos;
