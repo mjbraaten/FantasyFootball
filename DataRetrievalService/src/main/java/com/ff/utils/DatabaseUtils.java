@@ -122,7 +122,7 @@ public class DatabaseUtils {
 		    	st.setString(1, lastname);  
 		    	st.setString(2, firstname);
 		    	st.setString(3, position);
-		    	st.setString(4, team);
+		    	st.setString(4, team);	    	
 		    	
 		    	ResultSet rs = st.executeQuery();
 		    	

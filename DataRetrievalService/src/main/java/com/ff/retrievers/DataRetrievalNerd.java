@@ -155,7 +155,7 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 			String nerdID = jsonObjectPlayer.getJSONObject(i).getString("playerId");
 
 			List<Integer> matchingIDs = db.findPlayerIDs(lastname, firstname, position, team);
-			if(matchingIDs.size() == 1){
+			if(matchingIDs.size() >= 1){
 				db.insertNewID(matchingIDs.get(0), "nerd_id", Integer.parseInt(nerdID));
 			}
 		}

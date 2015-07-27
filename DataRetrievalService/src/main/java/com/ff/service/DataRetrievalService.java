@@ -37,8 +37,16 @@ public class DataRetrievalService {
 		//_nerdAPI.idMapInitializer(_db, "QB");
 		//_nerdAPI.idMapInitializer(_db, "RB");
 		//_nerdAPI.idMapInitializer(_db, "WR");
-		_nerdAPI.idMapInitializer(_db, "TE");
+		//_nerdAPI.idMapInitializer(_db, "TE");
 		//_nerdAPI.idMapInitializer(_db, "K");
+		
+		//_cbsAPI.idMapInitializer(_db, "null");
+		
+		//_nflAPI.idMapInitializer(_db, "QB");
+		//_nflAPI.idMapInitializer(_db, "RB");
+		//_nflAPI.idMapInitializer(_db, "WR");
+		//_nflAPI.idMapInitializer(_db, "TE");
+		//_nflAPI.idMapInitializer(_db, "K");
 		
 		//############ RUN ONLY ONCE ############
 		//ArrayList<NFLTeam> teams = _nerdAPI.getProTeams();
