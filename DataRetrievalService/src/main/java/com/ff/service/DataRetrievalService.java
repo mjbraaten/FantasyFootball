@@ -56,7 +56,7 @@ public class DataRetrievalService {
 		//System.out.println("final size: " + players.size());
 		//_db.populateNFLPlayers(players);
 		
-
+		_db.addRanking(_cbsAPI.getRankingByPos("QB"));
 	}
 	
 	public static void main(String[] args){

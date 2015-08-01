@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.ff.datatypes.NFLTeam;
 import com.ff.datatypes.Player;
 import com.ff.datatypes.Position;
+import com.ff.datatypes.Ranking;
 import com.ff.utils.DatabaseUtils;
 
 public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
@@ -154,10 +155,20 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 			String position = jsonObjectPlayer.getJSONObject(i).getString("position");
 			String nerdID = jsonObjectPlayer.getJSONObject(i).getString("playerId");
 
-			List<Integer> matchingIDs = db.findPlayerIDs(lastname, firstname, position, team);
+			List<Integer> matchingIDs = db.findPlayerIDbyDetails(lastname, firstname, position, team);
 			if(matchingIDs.size() >= 1){
 				db.insertNewID(matchingIDs.get(0), "nerd_id", Integer.parseInt(nerdID));
 			}
 		}
+	}
+
+	public Ranking getRanking() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Ranking getRankingByPos(String position) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

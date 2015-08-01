@@ -1,6 +1,7 @@
 package com.ff.retrievers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 
 import com.ff.datatypes.NFLTeam;
 import com.ff.datatypes.Player;
+import com.ff.datatypes.Ranking;
 import com.ff.utils.DatabaseUtils;
 
 public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
@@ -53,7 +55,7 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 		return null;
 	}
 	
-	public void idMapInitializer(DatabaseUtils db, String inPos) {
+	public void idMapInitializer(String inPos) {
 		ArrayList<String> validPositions = new ArrayList<String>();
 		validPositions.add("QB");
 		validPositions.add("RB");
@@ -78,10 +80,9 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 				String team = jsonObjectPlayer.getJSONObject(i).getString("pro_team");
 				String cbsID = jsonObjectPlayer.getJSONObject(i).getString("id");
 
-				List<Integer> matchingIDs = db.findPlayerIDs(lastname, firstname, position, team);
+				List<Integer> matchingIDs = _dbUtils.findPlayerIDbyDetails(lastname, firstname, position, team);
 				if(matchingIDs.size() >= 1){
-					db.insertNewID(matchingIDs.get(0), "cbs_id", Integer.parseInt(cbsID));
-					//System.out.println("Found: " + lastname + ", " + firstname + " : " + position + " : " + team);
+					_dbUtils.insertNewID(matchingIDs.get(0), "cbs_id", Integer.parseInt(cbsID));
 				}
 				else
 				{
@@ -89,5 +90,61 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 				}
 			}
 		}
+	}
+
+	public Ranking getRanking() {
+		String output = _restUtils.getrequest(_apiURL + "/fantasy/players/rankings?version=3.0&SPORT=football&response_format=json");
+		
+		JSONObject jsonObject = new JSONObject(output);
+		JSONObject jsonBody = jsonObject.getJSONObject("body");
+		JSONObject jsonRankings = jsonBody.getJSONObject("rankings");
+		
+		//String source_details = rankings.getString("source");
+		//String source_type = rankings.getString("source");
+		//String rankings_type = rankings.getString("Normal");
+		
+		JSONArray jsonPositions = jsonRankings.getJSONArray("position");
+		
+		for(int i = 0; i < jsonPositions.length(); i++){
+			String position = jsonPositions.getJSONObject(i).getString("abbr");
+			JSONArray jsonPlayers = jsonRankings.getJSONArray("players");
+			
+			for(int j = 0; j < jsonPlayers.length(); j++){
+				String cbsID = jsonPlayers.getJSONObject(i).getString("id");
+			}
+		}
+		
+		
+		return null;
+	}
+
+	public Ranking getRankingByPos(String position) {
+		Ranking myRank = new Ranking();
+		
+		String output = _restUtils.getrequest(_apiURL + "/fantasy/players/rankings?version=3.0&SPORT=football&response_format=json&position=" + position);
+		JSONObject jsonObject = new JSONObject(output);
+		JSONObject jsonBody = jsonObject.getJSONObject("body");
+		JSONObject jsonRankings = jsonBody.getJSONObject("rankings");
+		
+		myRank._source_type = "CBS_API";
+		myRank._source_details = "";
+		myRank._date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+		myRank._type = "Normal";
+		myRank._position = position;
+		
+		JSONArray jsonPositions = jsonRankings.getJSONArray("positions");
+
+		for(int i = 0; i < jsonPositions.length(); i++){
+			JSONArray jsonPlayers = jsonPositions.getJSONObject(i).getJSONArray("players");			
+			for(int j = 0; j < jsonPlayers.length(); j++){
+				int cbsID = jsonPlayers.getJSONObject(j).getInt("id");
+				//System.out.println(" ~ ~ ~ cbsID = " + cbsID);
+				int myID = _dbUtils.findPlayerIDbyAPIID("cbs_id", cbsID);
+				//System.out.println(" ~ ~ ~ myID = " + myID);
+				myRank._rankingsList.put(j, myID);
+			}
+		}
+		
+	return myRank;
 	}
 }
