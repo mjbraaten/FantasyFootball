@@ -62,6 +62,7 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 		validPositions.add("WR");
 		validPositions.add("TE");
 		validPositions.add("K");
+		validPositions.add("DST");
 		
 		ArrayList<Player> players = new ArrayList<Player>();
 		
@@ -80,7 +81,7 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 				String team = jsonObjectPlayer.getJSONObject(i).getString("pro_team");
 				String cbsID = jsonObjectPlayer.getJSONObject(i).getString("id");
 
-				List<Integer> matchingIDs = _dbUtils.findPlayerIDbyDetails(lastname, firstname, position, team);
+				List<Integer> matchingIDs = _dbUtils.findPlayerIDbyDetails(lastname, firstname, position);
 				if(matchingIDs.size() >= 1){
 					_dbUtils.insertNewID(matchingIDs.get(0), "cbs_id", Integer.parseInt(cbsID));
 				}
@@ -95,6 +96,7 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 	public Ranking getRanking() {
 		String output = _restUtils.getrequest(_apiURL + "/fantasy/players/rankings?version=3.0&SPORT=football&response_format=json");
 		
+		/*
 		JSONObject jsonObject = new JSONObject(output);
 		JSONObject jsonBody = jsonObject.getJSONObject("body");
 		JSONObject jsonRankings = jsonBody.getJSONObject("rankings");
@@ -114,6 +116,7 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 			}
 		}
 		
+		*/
 		
 		return null;
 	}
@@ -138,9 +141,7 @@ public class DataRetrievalCBS extends DataRetrieval implements IDataRetriever{
 			JSONArray jsonPlayers = jsonPositions.getJSONObject(i).getJSONArray("players");			
 			for(int j = 0; j < jsonPlayers.length(); j++){
 				int cbsID = jsonPlayers.getJSONObject(j).getInt("id");
-				//System.out.println(" ~ ~ ~ cbsID = " + cbsID);
 				int myID = _dbUtils.findPlayerIDbyAPIID("cbs_id", cbsID);
-				//System.out.println(" ~ ~ ~ myID = " + myID);
 				myRank._rankingsList.put(j, myID);
 			}
 		}

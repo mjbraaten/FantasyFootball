@@ -135,21 +135,38 @@ public class DatabaseUtils {
 		}
 	}
 
-	public List<Integer> findPlayerIDbyDetails(String lastname, String firstname, String position, String team)
+	public List<Integer> findPlayerIDbyDetails(String lastname, String firstname, String position)
 	{
+		ResultSet rs;
+		PreparedStatement st;
+		
 		try{
 			List<Integer> matchingIDs = new ArrayList<Integer>();
 
-			String str = "SELECT id FROM players WHERE lastname like ? and firstname like ? and position like ? and team like ?";
+			if((position.equals("DEF"))){
+				String str = "SELECT id FROM players WHERE lastname like ? and firstname like ?";
+				st = _conn.prepareStatement(str);
+				st.setString(1, lastname);  
+				st.setString(2, firstname);
+				rs = st.executeQuery();
+			}
+			else if((position.equals("DST"))){
+				String str = "SELECT id FROM players WHERE lastname like ? and position like ?";
+				st = _conn.prepareStatement(str);
+				st.setString(1, lastname);  
+				st.setString(2, position);
+				rs = st.executeQuery();
+			}
+			else{
+				String str = "SELECT id FROM players WHERE lastname like ? and firstname like ? and position like ?";
+				st = _conn.prepareStatement(str);
+				st.setString(1, lastname);  
+				st.setString(2, firstname);
+				st.setString(3, position);
+				rs = st.executeQuery();
+			}
 
-			PreparedStatement st = _conn.prepareStatement(str);
-
-			st.setString(1, lastname);  
-			st.setString(2, firstname);
-			st.setString(3, position);
-			st.setString(4, team);	    	
-
-			ResultSet rs = st.executeQuery();
+			//ResultSet rs = st.executeQuery();
 
 			while (rs.next()){
 				int id = rs.getInt("id");
@@ -229,7 +246,6 @@ public class DatabaseUtils {
 
 				//go through the players and insert into the table
 				for(int i = 0; i < inRanking._rankingsList.size(); i++){
-					System.out.println("hi");
 					stm = "INSERT INTO player_rankings(ranking_id, rank_number, player_id) VALUES(?, ?, ?)";
 					pst = _conn.prepareStatement(stm);
 					pst.setInt(1, ranking_id);  

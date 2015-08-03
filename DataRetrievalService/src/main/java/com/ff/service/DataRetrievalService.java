@@ -30,23 +30,6 @@ public class DataRetrievalService {
 	}
 	
 	public void initialize(){
-		//TEST
-		//_nflAPI.getPlayerData();
-		//_cbsAPI.getTeams();
-		
-		//_nerdAPI.idMapInitializer(_db, "QB");
-		//_nerdAPI.idMapInitializer(_db, "RB");
-		//_nerdAPI.idMapInitializer(_db, "WR");
-		//_nerdAPI.idMapInitializer(_db, "TE");
-		//_nerdAPI.idMapInitializer(_db, "K");
-		
-		//_cbsAPI.idMapInitializer(_db, "null");
-		
-		//_nflAPI.idMapInitializer(_db, "QB");
-		//_nflAPI.idMapInitializer(_db, "RB");
-		//_nflAPI.idMapInitializer(_db, "WR");
-		//_nflAPI.idMapInitializer(_db, "TE");
-		//_nflAPI.idMapInitializer(_db, "K");
 		
 		//############ RUN ONLY ONCE ############
 		//ArrayList<NFLTeam> teams = _nerdAPI.getProTeams();
@@ -56,7 +39,36 @@ public class DataRetrievalService {
 		//System.out.println("final size: " + players.size());
 		//_db.populateNFLPlayers(players);
 		
-		_db.addRanking(_cbsAPI.getRankingByPos("QB"));
+		//##################### ID MAPPING #####################
+		//_nerdAPI.idMapInitializer(_db, "QB");
+		//_nerdAPI.idMapInitializer(_db, "RB");
+		//_nerdAPI.idMapInitializer(_db, "WR");
+		//_nerdAPI.idMapInitializer(_db, "TE");
+		//_nerdAPI.idMapInitializer(_db, "K");
+		//_nerdAPI.idMapInitializer(_db, "DEF");
+		
+		_cbsAPI.idMapInitializer("DST");
+		
+		//_nflAPI.idMapInitializer("QB");
+		//_nflAPI.idMapInitializer("RB");
+		//_nflAPI.idMapInitializer("WR");
+		//_nflAPI.idMapInitializer("TE");
+		//_nflAPI.idMapInitializer("K");
+		//_nflAPI.idMapInitializer("DEF");
+		
+		//##################### RANKINGS #####################
+		//_db.addRanking(_cbsAPI.getRankingByPos("QB"));
+		//_db.addRanking(_cbsAPI.getRankingByPos("RB"));
+		//_db.addRanking(_cbsAPI.getRankingByPos("WR"));
+		//_db.addRanking(_cbsAPI.getRankingByPos("TE"));
+		//_db.addRanking(_cbsAPI.getRankingByPos("K"));
+		//_db.addRanking(_cbsAPI.getRankingByPos("DST"));
+		
+		//_db.addRanking(_nflAPI.getRanking());
+		
+		//_db.addRanking(_nerdAPI.getRanking());
+		
+		//_db.populateNFLPlayers(_reader.defenseTextFile());
 	}
 	
 	public static void main(String[] args){

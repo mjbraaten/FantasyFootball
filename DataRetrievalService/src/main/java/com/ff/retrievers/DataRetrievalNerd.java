@@ -1,6 +1,7 @@
 package com.ff.retrievers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -155,7 +156,7 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 			String position = jsonObjectPlayer.getJSONObject(i).getString("position");
 			String nerdID = jsonObjectPlayer.getJSONObject(i).getString("playerId");
 
-			List<Integer> matchingIDs = db.findPlayerIDbyDetails(lastname, firstname, position, team);
+			List<Integer> matchingIDs = db.findPlayerIDbyDetails(lastname, firstname, position);
 			if(matchingIDs.size() >= 1){
 				db.insertNewID(matchingIDs.get(0), "nerd_id", Integer.parseInt(nerdID));
 			}
@@ -163,8 +164,28 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 	}
 
 	public Ranking getRanking() {
-		// TODO Auto-generated method stub
-		return null;
+
+		Ranking myRank = new Ranking();
+		
+		String output = _restUtils.getrequest(_apiURL + "/service/draft-rankings/json/jkbt9qb2pfh3/");
+		System.out.println(output);
+
+		JSONObject jsonObject = new JSONObject(output);
+		JSONArray jsonObjectPlayer = jsonObject.getJSONArray("DraftRankings");
+		
+		myRank._source_type = "NERD_API";
+		myRank._source_details = "";
+		myRank._date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+		myRank._type = "Normal";
+		myRank._position = "All";
+		
+		for (int i = 0; i < jsonObjectPlayer.length(); i++){
+			int nerd_id = jsonObjectPlayer.getJSONObject(i).getInt("playerId");
+			int myID = _dbUtils.findPlayerIDbyAPIID("nerd_id", nerd_id);
+			myRank._rankingsList.put(i, myID);
+		}
+		
+		return myRank;
 	}
 
 	public Ranking getRankingByPos(String position) {
