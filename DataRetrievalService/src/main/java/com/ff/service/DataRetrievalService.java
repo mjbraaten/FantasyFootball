@@ -47,7 +47,7 @@ public class DataRetrievalService {
 		//_nerdAPI.idMapInitializer(_db, "K");
 		//_nerdAPI.idMapInitializer(_db, "DEF");
 		
-		_cbsAPI.idMapInitializer("DST");
+		//_cbsAPI.idMapInitializer("DST");
 		
 		//_nflAPI.idMapInitializer("QB");
 		//_nflAPI.idMapInitializer("RB");
@@ -69,6 +69,8 @@ public class DataRetrievalService {
 		//_db.addRanking(_nerdAPI.getRanking());
 		
 		//_db.populateNFLPlayers(_reader.defenseTextFile());
+		
+		_reader.importCustomRankingFile("Rookie-QB-11132014.txt").printPlayerRanking();
 	}
 	
 	public static void main(String[] args){

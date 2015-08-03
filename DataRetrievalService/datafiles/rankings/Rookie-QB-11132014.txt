@@ -1,0 +1,54 @@
+HEADER	
+source_type	Custom
+source_details	College Players CBS
+date	11/13/2014
+type	Rookies
+position	QB
+PLAYERS	TEAM
+Marcus Mariota	Oregon
+Jameis Winston	Florida State
+Brett Hundley	UCLA
+Dak Prescott	Mississippi State
+Bryce Petty	Baylor
+Shane Carden	East Carolina
+Garrett Grayson	Colorado State
+Cody Fajardo	Nevada
+Sean Mannion	Oregon State
+Brandon Bridge	South Alabama
+Bo Wallace	Ole Miss
+Jake Waters	Kansas State
+Tyler Heinicke	Old Dominion
+Bryan Bennett	Southeastern Louisiana
+Connor Halliday	Washington State
+Chuckie Keeton	Utah State
+Clint Trickett	West Virginia
+Gary Nova	Rutgers
+Taylor Kelly	Arizona State
+Hutson Mason	Georgia
+Nick Marshall	Auburn
+Devin Gardner	Michigan
+Jerry Lovelocke	Prairie View A&M
+Cole Stoudt	Clemson
+Quinn Epperly	Princeton
+Anthony Boone	Duke
+Trevor Siemian	Northwestern
+Blake Sims	Alabama
+Andrew Manley	Eastern Illinois
+Matt Joeckel	TCU
+Dylan Thompson	South Carolina
+Jesse Scroggins	Arizona
+Nick Montana	Tulane
+Pete Thomas	Louisiana-Monroe
+Tyler Murphy	Boston College
+C.J. Brown	Maryland
+Justin Worley	Tennessee
+Rakeem Cato	Marshall
+Terrance Broadway	UL Lafayette
+Kevin Rodgers	Henderson State
+Mark Myers	John Carroll
+Jameill Showers	Texas-El Paso
+Jake Heaps	Miami (Fla.)
+Austin Sumner	South Dakota State
+Brandon Connette	Fresno State
+Brett Nottingham	Columbia
+Garrett Safron	Sacramento State
