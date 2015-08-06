@@ -8,9 +8,6 @@ import java.util.Date;
 import com.ff.datatypes.NFLTeam;
 import com.ff.datatypes.Player;
 import com.ff.datatypes.Ranking;
-import com.ff.retrievers.DataRetrievalCBS;
-import com.ff.retrievers.DataRetrievalNFL;
-import com.ff.retrievers.DataRetrievalNerd;
 
 public class DatabaseUtils {
 	private Connection _conn = null;
@@ -24,11 +21,11 @@ public class DatabaseUtils {
 	private Connection connectToDatabaseOrDie()
 	{
 		Connection conn = null;
-		try {
+		try {	        
 			Class.forName("org.postgresql.Driver");
 			//DriverManager.registerDriver(new org.postgresql.Driver());
-			String url = "jdbc:postgresql://localhost/FantasyFootball";
-			conn = DriverManager.getConnection(url,"postgres", "pirates");
+			String url = "jdbc:postgresql://localhost/" + System.getProperty("database");
+			conn = DriverManager.getConnection(url,System.getProperty("dbuser"), System.getProperty("dbpassword"));
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

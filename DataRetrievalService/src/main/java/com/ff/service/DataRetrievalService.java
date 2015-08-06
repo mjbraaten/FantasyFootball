@@ -1,6 +1,11 @@
 package com.ff.service;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import com.ff.datatypes.NFLTeam;
 import com.ff.datatypes.Player;
@@ -12,6 +17,8 @@ import com.ff.utils.FileReader;
 
 public class DataRetrievalService {
 
+	
+	
 	private DatabaseUtils _db;
 	private FileReader _reader;
 	private DataRetrievalNFL _nflAPI;
@@ -19,6 +26,9 @@ public class DataRetrievalService {
 	private DataRetrievalNerd _nerdAPI;
 	
 	public DataRetrievalService(){
+		
+		loadProperties();
+		
 		//set up DB connector
 		_db = new DatabaseUtils();	
 		//set up file reader
@@ -27,6 +37,8 @@ public class DataRetrievalService {
 		_nflAPI = new DataRetrievalNFL();
 		_cbsAPI = new DataRetrievalCBS();
 		_nerdAPI = new DataRetrievalNerd();
+		
+
 	}
 	
 	public void initialize(){
@@ -70,7 +82,7 @@ public class DataRetrievalService {
 		
 		//_db.populateNFLPlayers(_reader.defenseTextFile());
 		
-		_reader.importCustomRankingFile("Rookie-QB-11132014.txt").printPlayerRanking();
+		//_reader.importCustomRankingFile("Rookie-QB-11132014.txt").printPlayerRanking();
 	}
 	
 	public static void main(String[] args){
@@ -78,6 +90,43 @@ public class DataRetrievalService {
 		DataRetrievalService drs = new DataRetrievalService();
 		drs.initialize();
 		
+	}
+	
+	public void loadProperties(){
+		InputStream input = null;
+		Properties prop = new Properties();
+		
+    	try {
+        
+    		String filename = System.getProperty("user.dir") + "/config/config.properties";
+    		
+    		input = new FileInputStream(filename);
+
+    		//load a properties file from class path, inside static method
+    		prop.load(input);
+                //get the property value and print it out
+               // System.out.println(prop.getProperty("database"));
+    	       // System.out.println(prop.getProperty("dbuser"));
+    	       // System.out.println(prop.getProperty("dbpassword"));
+    	       // System.out.println(prop.getProperty("nerd_api_key"));
+ 
+    	} catch (IOException ex) {
+    		ex.printStackTrace();
+        } finally{
+        	if(input!=null){
+        		try {
+				input.close();
+				
+				System.setProperty("database", prop.getProperty("database"));
+				System.setProperty("dbuser", prop.getProperty("dbuser"));
+				System.setProperty("dbpassword", prop.getProperty("dbpassword"));
+				System.setProperty("nerd_api_key", prop.getProperty("nerd_api_key"));
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        	}
+        }
 	}
 
 }

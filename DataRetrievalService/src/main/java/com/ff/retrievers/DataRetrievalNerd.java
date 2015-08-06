@@ -24,7 +24,7 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 		//first build up bye weeks
 		HashMap<String, Integer> byeWeekMap = getByeWeeks();
 		
-		String output = _restUtils.getrequest(_apiURL + "/service/nfl-teams/json/jkbt9qb2pfh3/");
+		String output = _restUtils.getrequest(_apiURL + "/service/nfl-teams/json/" + System.getProperty("nerd_api_key") + "/");
 		System.out.println(output);
 
 		JSONObject jsonObject = new JSONObject(output);
@@ -52,7 +52,7 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 
 	//Used by the "populateTeams" method
 	public HashMap<String, Integer> getByeWeeks(){
-		String output = _restUtils.getrequest(_apiURL + "/service/byes/json/jkbt9qb2pfh3/");
+		String output = _restUtils.getrequest(_apiURL + "/service/byes/json/" + System.getProperty("nerd_api_key") + "/");
 		//System.out.println(output);
 
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -97,7 +97,7 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 	public ArrayList<Player> getPlayersByPosition(String pos, ArrayList<String> rookiesList) {
 		ArrayList<Player> players = new ArrayList<Player>();
 		
-		String output = _restUtils.getrequest(_apiURL + "/service/players/json/jkbt9qb2pfh3/" + pos + "/");
+		String output = _restUtils.getrequest(_apiURL + "/service/players/json/" + System.getProperty("nerd_api_key") + "/" + pos + "/");
 		JSONObject jsonObject = new JSONObject(output);
 		JSONArray jsonObjectPlayer = jsonObject.getJSONArray("Players");
 		
@@ -144,7 +144,7 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 	public void idMapInitializer(DatabaseUtils db, String inPos) {
 		ArrayList<Player> players = new ArrayList<Player>();
 		
-		String output = _restUtils.getrequest(_apiURL + "/service/players/json/jkbt9qb2pfh3/" + inPos + "/");
+		String output = _restUtils.getrequest(_apiURL + "/service/players/json/" + System.getProperty("nerd_api_key") + "/" + inPos + "/");
 		JSONObject jsonObject = new JSONObject(output);
 		JSONArray jsonObjectPlayer = jsonObject.getJSONArray("Players");
 		
@@ -167,7 +167,7 @@ public class DataRetrievalNerd extends DataRetrieval implements IDataRetriever{
 
 		Ranking myRank = new Ranking();
 		
-		String output = _restUtils.getrequest(_apiURL + "/service/draft-rankings/json/jkbt9qb2pfh3/");
+		String output = _restUtils.getrequest(_apiURL + "/service/draft-rankings/json/" + System.getProperty("nerd_api_key") + "/");
 		System.out.println(output);
 
 		JSONObject jsonObject = new JSONObject(output);
